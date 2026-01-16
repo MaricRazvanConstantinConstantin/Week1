@@ -22,6 +22,8 @@ class App {
 
     const history = this.historyManager.getHistory();
     this.uiRenderer.renderHistory(history);
+    const favorites = this.favoritesManager.getFavorites();
+    this.uiRenderer.renderFavorites(favorites);
   }
 
   setupEventListeners() {
@@ -46,6 +48,20 @@ class App {
       } else {
         this.favoritesManager.removeCountry(countryName);
       }
+
+      const updatedFavorites = this.favoritesManager.getFavorites();
+      this.uiRenderer.renderFavorites(updatedFavorites);
+
+      const state = this.stateManager.getState();
+        if (state.results && state.results.name &&
+            state.results.name.toLowerCase() === countryName.toLowerCase()) {
+              const favBtn = document.querySelector('#card-container .favorite-btn');
+              if (favBtn) {
+                favBtn.classList.toggle('is-active', isFavorite);
+                favBtn.title = isFavorite ? 'Remove from favorites' : 'Add to favorites';
+                favBtn.setAttribute('aria-label', 'Toggle favorite');
+              }
+            }
     });
   }
 

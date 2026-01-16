@@ -70,7 +70,7 @@ class UIRenderer {
     }
 
     const favBtn = this.container.querySelector('.favorite-btn');
-
+    // use !favbtn 
     if (favBtn) {
       favBtn.addEventListener('click', () => {
         const countryName = favBtn.getAttribute('data-country');
@@ -91,6 +91,49 @@ class UIRenderer {
     }
   }
 
+  renderFavorites(favorites){
+    const favoritesContainer = document.getElementById('favorites-container');
+
+    if (!favorites || favorites.length === 0) {
+      favoritesContainer.innerHTML = '';
+      return;
+    }
+
+    
+    const items = favorites.map(name => `
+        <div class="favorite-item" data-country="${name}">
+          <span class="favorite-name">${name}</span>
+          <button class="fav-remove-btn" type="button" aria-label="Remove from favorites" title="Remove">
+            ✕
+          </button>
+        </div>
+      `).join('');
+
+    const html = `
+      <div class="favorites-list">
+        <div class="favorites-title">Favorites</div>
+        <div class="favorites-items">
+          ${items}
+        </div>
+      </div>
+    `;
+
+    favoritesContainer.innerHTML = html;
+    
+    favoritesContainer.querySelectorAll('.fav-remove-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const wrapper = e.currentTarget.closest('.favorite-item');
+        if (!wrapper) return;
+        const countryName = wrapper.getAttribute('data-country');
+
+        // Dispatch the same event your App already listens to
+        const evt = new CustomEvent('favoriteToggled', {
+          detail: { countryName, isFavorited: false }
+        });
+        document.dispatchEvent(evt);
+      });
+    });
+  }
 
   renderHistory(countries){
     const historyContainer = document.getElementById('history-container');
@@ -141,6 +184,9 @@ class UIRenderer {
     const historyContainer = document.createElement('div');
     historyContainer.id = 'history-container';
 
+    const favoritesContainer = document.createElement('div');
+    favoritesContainer.id = 'favorites-container';
+
     const cardContainer = document.createElement('div');
     cardContainer.id = 'card-container';
 
@@ -155,6 +201,7 @@ class UIRenderer {
     container.appendChild(status);
     container.appendChild(historyContainer);
     container.appendChild(cardContainer);
+    container.appendChild(favoritesContainer);
 
     body.appendChild(container);
 
@@ -165,6 +212,7 @@ class UIRenderer {
       searchButton,
       status,
       historyContainer,
+      favoritesContainer,
       cardContainer,
     };
   }
