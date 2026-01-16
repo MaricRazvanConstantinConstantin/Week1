@@ -3,12 +3,14 @@ import DataFormatter from './dataFormatter.js';
 import UIRenderer from './uiRenderer.js';
 import StateManager from './stateManager.js';
 import HistoryManager from './historyManager.js';
+import FavoritesManager from './favoritesManager.js';
 
 class App {
   constructor() {
     this.countryService = new CountryService();
     this.stateManager = new StateManager();
-    this.uiRenderer = new UIRenderer();
+    this.favoritesManager = new FavoritesManager();
+    this.uiRenderer = new UIRenderer(this.favoritesManager);
     this.uiElements = this.uiRenderer.buildUI();
     this.historyManager = new HistoryManager();
     this.init();
@@ -23,7 +25,8 @@ class App {
   }
 
   setupEventListeners() {
-    this.uiElements.button.addEventListener('click', () => this.handleSearch());
+    this.uiElements.searchButton.addEventListener('click', () => this.handleSearch());
+
     this.uiElements.input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') this.handleSearch();
     });
@@ -32,6 +35,17 @@ class App {
       const countryName = e.detail.countryName;
       this.uiElements.input.value = countryName;
       this.performSearch(countryName);
+    });
+
+    document.addEventListener('favoriteToggled', (e) => {
+      const countryName = e.detail.countryName;
+      const isFavorite = e.detail.isFavorite;
+
+      if (isFavorite) {
+        this.favoritesManager.addCountry(countryName);
+      } else {
+        this.favoritesManager.removeCountry(countryName);
+      }
     });
   }
 

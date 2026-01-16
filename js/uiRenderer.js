@@ -1,5 +1,7 @@
 class UIRenderer {
-  constructor() {
+  constructor(favoriteManager) {
+    console.log("UIRenderer received favorites:", favoriteManager);
+    this.favoriteManager = favoriteManager;
     this.container = null;
   }
 
@@ -16,20 +18,44 @@ class UIRenderer {
     }
   }
 
+  
   renderCard(data) {
+    const isFavorite = this.favoriteManager
+      .getFavorites()
+      .includes(data.name);
+
     const html = `
       <div class="card">
+        <button
+          class="favorite-btn ${isFavorite ? 'is-active' : ''}"
+          type="button"
+          aria-label="Toggle favorite"
+          title="Toggle favorite"
+          data-country="${data.name}">
+          <svg class="star" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="currentColor"
+              d="M12 17.27L18.18 21l-1.64-7.03L22 9.25l-7.19-.61L12 2 9.19 8.64 2 
+                9.25l5.46 4.72L5.82 21z"/>
+          </svg>
+        </button>
+
         <div class="card-grid">
           <div class="col-flag">
-            <div class="flag">${
-              data.flag ? `<img src="${data.flag}" alt="Flag of ${data.name}">` : ''
-            }</div>
+            <div class="flag">
+              ${data.flag
+                ? `<img src="${data.flag}" alt="Flag of ${data.name}"/>`
+                : ''}
+            </div>
           </div>
           <div class="col-main info">
             <h2>${data.name}</h2>
             <p><strong>Capital:</strong> ${data.capital}</p>
             <p><strong>Language(s):</strong> ${data.languages}</p>
-            <p class="map"><a href="${data.mapsUrl}" target="_blank" rel="noopener">View on Google Maps</a></p>
+            <p class="map">
+              <a href="${data.mapsUrl}">
+                View on Google Maps
+              </a>
+            </p>
           </div>
           <div class="col-side">
             <p><strong>Population:</strong> ${data.population}</p>
@@ -38,10 +64,33 @@ class UIRenderer {
         </div>
       </div>
     `;
+
     if (this.container) {
       this.container.innerHTML = html;
     }
+
+    const favBtn = this.container.querySelector('.favorite-btn');
+
+    if (favBtn) {
+      favBtn.addEventListener('click', () => {
+        const countryName = favBtn.getAttribute('data-country');
+        const currentlyActive = favBtn.classList.contains('is-active');
+        const newState = !currentlyActive;
+
+        favBtn.classList.toggle('is-active', newState);
+
+        const event = new CustomEvent('favoriteToggled', {
+          detail: {
+            countryName,
+            isFavorite: newState,
+          },
+        });
+
+        document.dispatchEvent(event);
+      });
+    }
   }
+
 
   renderHistory(countries){
     const historyContainer = document.getElementById('history-container');
@@ -76,14 +125,14 @@ class UIRenderer {
     input.placeholder = 'Type a country name…';
     input.style.marginRight = '8px';
 
-    const button = document.createElement('button');
-    button.id = 'search-button';
-    button.textContent = 'Search';
+    const searchButton = document.createElement('button');
+    searchButton.id = 'search-button';
+    searchButton.textContent = 'Search';
 
     const controls = document.createElement('div');
     controls.className = 'controls';
     controls.appendChild(input);
-    controls.appendChild(button);
+    controls.appendChild(searchButton);
 
     const status = document.createElement('div');
     status.id = 'status';
@@ -113,7 +162,7 @@ class UIRenderer {
 
     return {
       input,
-      button,
+      searchButton,
       status,
       historyContainer,
       cardContainer,
