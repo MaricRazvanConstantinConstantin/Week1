@@ -3,12 +3,14 @@ import DataFormatter from './dataFormatter.js';
 import UIRenderer from './uiRenderer.js';
 import StateManager from './stateManager.js';
 import HistoryManager from './historyManager.js';
+import FavoritesManager from './favoritesManager.js';
 
 class App {
   constructor() {
     this.countryService = new CountryService();
     this.stateManager = new StateManager();
-    this.uiRenderer = new UIRenderer();
+    this.favoritesManager = new FavoritesManager();
+    this.uiRenderer = new UIRenderer(this.favoritesManager);
     this.uiElements = this.uiRenderer.buildUI();
     this.historyManager = new HistoryManager();
     this.init();
@@ -20,10 +22,13 @@ class App {
 
     const history = this.historyManager.getHistory();
     this.uiRenderer.renderHistory(history);
+    const favorites = this.favoritesManager.getFavorites();
+    this.uiRenderer.renderFavorites(favorites);
   }
 
   setupEventListeners() {
-    this.uiElements.button.addEventListener('click', () => this.handleSearch());
+    this.uiElements.searchButton.addEventListener('click', () => this.handleSearch());
+
     this.uiElements.input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') this.handleSearch();
     });
@@ -32,6 +37,31 @@ class App {
       const countryName = e.detail.countryName;
       this.uiElements.input.value = countryName;
       this.performSearch(countryName);
+    });
+
+    document.addEventListener('favoriteToggled', (e) => {
+      const countryName = e.detail.countryName;
+      const isFavorite = e.detail.isFavorite;
+
+      if (isFavorite) {
+        this.favoritesManager.addCountry(countryName);
+      } else {
+        this.favoritesManager.removeCountry(countryName);
+      }
+
+      const updatedFavorites = this.favoritesManager.getFavorites();
+      this.uiRenderer.renderFavorites(updatedFavorites);
+
+      const state = this.stateManager.getState();
+        if (state.results && state.results.name &&
+            state.results.name.toLowerCase() === countryName.toLowerCase()) {
+              const favBtn = document.querySelector('#card-container .favorite-btn');
+              if (favBtn) {
+                favBtn.classList.toggle('is-active', isFavorite);
+                favBtn.title = isFavorite ? 'Remove from favorites' : 'Add to favorites';
+                favBtn.setAttribute('aria-label', 'Toggle favorite');
+              }
+            }
     });
   }
 
