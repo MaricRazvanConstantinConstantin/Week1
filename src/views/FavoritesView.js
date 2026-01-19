@@ -45,7 +45,6 @@ export default class FavoritesView {
 
     const itemsHTML = list.map(name => this.tpl.interpolate(this.itemTemplate, { name })).join('');
 
-    // Inject items into wrapper
     const html = this.tpl.injectHTML(this.wrapperTemplate, { items: itemsHTML });
     this.container.innerHTML = html;
   }

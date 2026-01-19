@@ -1,5 +1,3 @@
-
-// src/models/ViewStateModel.js
 export default class ViewStateModel {
   constructor(bus) {
     this.bus = bus;

@@ -26,10 +26,11 @@ function bootstrap() {
   const viewStateModel = new ViewStateModel(bus);
 
   const root = new RootView().build();
+
+  const searchView = new SearchView(bus, root.input, root.searchButton);
   const countryView = new CountryView(bus, root.cardContainer);
   const favoritesView = new FavoritesView(bus, root.favoritesContainer);
   const historyView = new HistoryView(bus, root.historyContainer);
-  const searchView = new SearchView(bus, root.input, root.searchButton);
 
   new AppController({
     bus,
@@ -38,12 +39,12 @@ function bootstrap() {
     historyModel,
     viewStateModel,
     views: {
+      search: searchView,
       country: countryView,
       favorites: favoritesView,
       history: historyView,
       status: root.status,
-      search: searchView,
-    }
+    },
   });
 }
 
