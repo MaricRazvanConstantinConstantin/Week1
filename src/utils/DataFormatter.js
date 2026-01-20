@@ -22,4 +22,15 @@ export default class DataFormatter {
     const latlng = c?.capitalInfo?.latlng || c?.latlng;
     return latlng ? `https://www.google.com/maps/search/?api=1&query=${latlng[0]},${latlng[1]}` : '#';
   }
+
+
+  static formatCountryCompact(c) {
+    return {
+      name: c?.name?.common || '—',
+      flag: c?.flags?.svg || c?.flags?.png || '',
+      capital: c?.capital?.[0] ?? '—',
+      mapsUrl: c?.maps?.googleMaps || '#',
+    };
+  }
+
 }

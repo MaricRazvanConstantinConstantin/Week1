@@ -51,5 +51,14 @@ export default class CountryService {
 
     return filtered;
   }
+
+  async getByCodes(codes = []) {
+    if (!Array.isArray(codes) || codes.length === 0) return [];
+    const url = `${this.baseUrl}/alpha?codes=${codes.map(c => encodeURIComponent(c)).join(',')}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Failed to fetch neighbors');
+    return res.json(); 
+  }
+
 }
 

@@ -40,6 +40,7 @@ export default class RootView {
       historyContainer: document.getElementById("history-container"),
       cardContainer: document.getElementById("card-container"),
       favoritesContainer: document.getElementById("favorites-container"),
+      neighborsContainer: document.getElementById("neighbors-container"),
       themeMount: document.getElementById("theme-toggle-mount"),
     };
   }

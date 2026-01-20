@@ -63,6 +63,11 @@ export default class AppController {
       }
     });
 
+    this.bus.on('neighbors:changed', (neighbors) => {
+      if (this.views.neighbors?.render){
+        this.views.neighbors.render(neighbors);
+      }
+    });
   }
 
   _init() {
