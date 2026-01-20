@@ -1,0 +1,29 @@
+<section class="flex flex-col gap-4">
+  <div
+    class="search-bar flex items-center gap-3 bg-white dark:bg-slate-800 p-3 rounded-xl shadow-sm ring-1 ring-slate-200 dark:ring-slate-700"
+  >
+    <input
+      type="text"
+      id="search-input"
+      placeholder="Search for a country..."
+      class="flex-1 bg-transparent outline-none text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 px-2 text-base"
+    />
+
+    <button
+      id="search-button"
+      type="button"
+      class="px-4 py-2 rounded-lg text-white bg-amber-600 hover:bg-amber-700 dark:bg-amber-500 dark:hover:bg-amber-600 shadow-sm transition font-medium"
+    >
+      Search
+    </button>
+  </div>
+
+  <div
+    id="status"
+    class="text-sm text-slate-600 dark:text-slate-300 mt-2 flex items-center gap-2"
+    aria-live="polite"
+  ></div>
+
+  <div id="history-container" class="mt-3 mb-2"></div>
+  <div id="card-container" class="mt-4"></div>
+</section>
