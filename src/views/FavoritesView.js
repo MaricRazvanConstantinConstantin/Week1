@@ -27,10 +27,10 @@ export default class FavoritesView {
 
   async _ensureTemplates() {
     if (!this.wrapperTemplate) {
-      this.wrapperTemplate = await this.tpl.load('favorites-list.html');
+      this.wrapperTemplate = await this.tpl.load('components/favorites-list.html');
     }
     if (!this.itemTemplate) {
-      this.itemTemplate = await this.tpl.load('favorites-item.html');
+      this.itemTemplate = await this.tpl.load('components/favorites-item.html');
     }
   }
 

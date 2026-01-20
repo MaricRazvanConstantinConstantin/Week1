@@ -15,7 +15,7 @@ export default class ThemeView {
     initTheme();
 
     if (!this.template) {
-      this.template = await this.tpl.load('theme-toggle.html');
+      this.template = await this.tpl.load('components/theme-toggle.html');
     }
     this.mountEl.innerHTML = this.template;
 
@@ -33,7 +33,7 @@ export default class ThemeView {
     sync();
 
     btn.addEventListener('click', () => {
-      const isDark = toggleTheme();
+      toggleTheme();
       document.documentElement.classList.add('transition-colors');
       setTimeout(() => document.documentElement.classList.remove('transition-colors'), 180);
       sync();

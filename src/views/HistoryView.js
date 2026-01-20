@@ -19,10 +19,10 @@ export default class HistoryView {
 
   async _ensureTemplates() {
     if (!this.wrapperTemplate) {
-      this.wrapperTemplate = await this.tpl.load('history-list.html');
+      this.wrapperTemplate = await this.tpl.load('components/history-list.html');
     }
     if (!this.itemTemplate) {
-      this.itemTemplate = await this.tpl.load('history-item.html');
+      this.itemTemplate = await this.tpl.load('components/history-item.html');
     }
   }
 

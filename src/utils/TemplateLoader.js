@@ -1,5 +1,3 @@
-
-// src/utils/TemplateLoader.js
 export default class TemplateLoader {
   constructor(basePath = './templates') {
     this.basePath = basePath;

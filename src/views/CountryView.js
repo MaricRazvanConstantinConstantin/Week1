@@ -45,7 +45,7 @@ export default class CountryView {
   async _ensureTemplates() {
     if (!this.cardTemplate) {
 
-      this.cardTemplate = await this.tpl.load('country-card.html');
+      this.cardTemplate = await this.tpl.load('components/country-card.html');
     }
   }
 
