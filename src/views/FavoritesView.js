@@ -9,7 +9,6 @@ export default class FavoritesView {
     this.wrapperTemplate = null;
     this.itemTemplate = null;
 
-    // Remove click
     container.addEventListener('click', (e) => {
       const removeBtn = e.target.closest('.fav-remove-btn');
       if (!removeBtn) return;

@@ -47,12 +47,22 @@ export default class AppController {
       this.views.history.render(list);
     });
 
+    
     this.bus.on('state:changed', ({ loading, message }) => {
       const s = this.views.status;
-      if (loading) s.innerHTML = '<div class="spinner"></div>';
-      else if (message) s.textContent = message;
-      else s.textContent = '';
+
+      if (loading) {
+        s.innerHTML = `
+          <span class="sr-only">Loading…</span>
+          <div class="w-5 h-5 border-2 border-slate-300 dark:border-slate-600 border-t-amber-500 rounded-full animate-spin"></div>
+        `;
+      } else if (message) {
+        s.textContent = message;  
+      } else {
+        s.textContent = '';   
+      }
     });
+
   }
 
   _init() {

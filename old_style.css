@@ -1,49 +1,5 @@
-.app-header {
-  padding: 16px 20px;
-  border-bottom: 1px solid #e2e5ea;
-  background: #fff;
-}
 
-.app-title {
-  margin: 0;
-  font-size: 1.6rem;
-}
 
-.history-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.history-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
-  border-radius: 9999px; 
-  background: #eef2f7;
-  color: #334155; 
-  border: 1px solid #e2e8f0;
-  cursor: pointer;
-  font-size: 0.9rem;
-  line-height: 1;
-  transition: background 120ms ease, transform 80ms ease, color 120ms ease;
-}
-
-.history-item:hover {
-  background: #e2e8f0;
-}
-
-.history-item:active {
-  transform: translateY(1px);
-}
-
-.history-name {
-  max-width: 12rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
 
 :root.dark .history-item {
   background: #1f2937;

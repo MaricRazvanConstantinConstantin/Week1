@@ -13,10 +13,11 @@ import SearchView from './views/SearchView.js';
 import CountryView from './views/CountryView.js';
 import FavoritesView from './views/FavoritesView.js';
 import HistoryView from './views/HistoryView.js';
+import ThemeView from './views/ThemeView.js';
 
 import AppController from './controllers/AppController.js';
 
-function bootstrap() {
+async function bootstrap() {
   const bus = new EventBus();
 
   const service = new CountryService();
@@ -25,12 +26,15 @@ function bootstrap() {
   const historyModel = new HistoryModel(bus);
   const viewStateModel = new ViewStateModel(bus);
 
-  const root = new RootView().build();
+  const root = await new RootView().build();
 
   const searchView = new SearchView(bus, root.input, root.searchButton);
   const countryView = new CountryView(bus, root.cardContainer);
   const favoritesView = new FavoritesView(bus, root.favoritesContainer);
   const historyView = new HistoryView(bus, root.historyContainer);
+  const themeView = new ThemeView(root.themeMount);
+  themeView.render();
+
 
   new AppController({
     bus,
