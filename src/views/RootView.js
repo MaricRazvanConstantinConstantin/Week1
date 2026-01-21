@@ -41,6 +41,7 @@ export default class RootView {
       cardContainer: document.getElementById("card-container"),
       favoritesContainer: document.getElementById("favorites-container"),
       neighborsContainer: document.getElementById("neighbors-container"),
+      neighborsToggle: document.getElementById("neighbors-toggle"),
       themeMount: document.getElementById("theme-toggle-mount"),
     };
   }
