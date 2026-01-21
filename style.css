@@ -1,0 +1,390 @@
+
+/* =========================
+   THEME VARIABLES
+   ========================= */
+:root {
+  /* Backgrounds */
+  --bg: #ffffff;
+  --bg-panel: #ffffff;
+  --bg-subtle: #f8fafc;   /* slate-50/100-ish */
+
+  /* Text */
+  --text: #0f172a;        /* slate-900 */
+  --text-weak: #334155;   /* slate-700 */
+  --text-muted: #475569;  /* slate-600 */
+
+  /* Borders */
+  --border: #e2e8f0;      /* slate-200 */
+  --border-strong: #334155; /* slate-700 */
+
+  /* Accents */
+  --accent: #f59e0b;      /* amber-500 */
+  --accent-strong: #b45309;/* amber-700 */
+  --link: #d97706;        /* amber-600 */
+  --link-hover: #b45309;  /* amber-700 */
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1),
+               0 2px 4px -2px rgb(0 0 0 / 0.1);
+
+  /* Rings / outlines */
+  --ring: #e5e7eb;        /* ring color for light */
+}
+
+html.dark {
+  --bg: #0f172a;          /* slate-900 */
+  --bg-panel: #0b1220;    /* near slate-950 */
+  --bg-subtle: #111827;   /* subtle */
+  --text: #f1f5f9;        /* slate-100 */
+  --text-weak: #e2e8f0;   /* slate-200 */
+  --text-muted: #94a3b8;  /* slate-400 */
+  --border: #334155;      /* slate-700 */
+  --border-strong: #1f2937;/* slate-800 */
+  --accent: #f59e0b;      /* same */
+  --accent-strong: #f59e0b;
+  --link: #f59e0b;
+  --link-hover: #d97706;
+  --ring: #334155;
+}
+
+/* Optional smooth theme transitions */
+html {
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+}
+
+/* =========================
+   GLOBAL
+   ========================= */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  line-height: 1.45;
+}
+
+/* Utility helpers */
+.container { max-width: 1200px; margin-inline: auto; padding-inline: 16px; }
+.m-0 { margin: 0; }
+.sr-only {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0);
+  white-space: nowrap; border: 0;
+}
+
+/* Links */
+a { color: var(--link); text-decoration: none; }
+a:hover { color: var(--link-hover); text-decoration: underline; }
+
+/* =========================
+   HEADER
+   ========================= */
+.header {
+  width: 100%;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  padding: 16px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.header-title {
+  margin: 0;
+  font-size: clamp(1.5rem, 2vw, 1.875rem); /* 24–30px */
+  color: var(--text);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.header-actions { display: flex; gap: 8px; }
+
+/* Theme toggle button (example) */
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 12px;
+  background: var(--bg-subtle);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+}
+.btn-ghost:hover { filter: brightness(0.98); }
+
+/* =========================
+   LAYOUT GRID (left | center | right)
+   ========================= */
+.page {
+  /* If the grid is direct child of body and you want full-height layout: */
+  min-height: 100vh; display: flex; flex-direction: column;
+}
+.page-content {
+  flex: 1 1 auto; min-height: 0;
+}
+
+.layout-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* mobile: single column */
+  gap: 24px;
+  padding: 24px 16px;
+  min-height: 0; /* allow children to shrink */
+}
+
+@media (min-width: 1024px) {
+  .layout-grid {
+    grid-template-columns: 240px 1fr 260px;
+  }
+}
+
+/* =========================
+   PANELS / SIDEBARS
+   ========================= */
+.panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: var(--shadow-md);
+}
+
+.sidebar {
+  display: flex; flex-direction: column; gap: 16px;
+  min-height: 0; height: 100%; max-height: 100%;
+  overflow-y: auto; overflow-x: hidden;
+  scrollbar-gutter: stable;
+}
+
+/* Sidebar header strip */
+.sidebar-header {
+  margin: -16px -16px 0 -16px; /* full-bleed inside panel with 16px padding */
+  padding: 12px 16px;
+  background: var(--accent);
+  color: #fff;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+  box-shadow: var(--shadow-sm);
+  font: 700 0.9rem/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Sidebar row (full-bleed subheader rows) */
+.sidebar-row {
+  margin: 0 -16px;
+  padding: 8px 16px;
+  background: var(--bg-subtle);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Sidebar button */
+.sidebar-btn {
+  width: 100%;
+  text-align: left;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--bg-subtle);
+  color: var(--text);
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+.sidebar-btn:hover { filter: brightness(0.98); }
+
+/* =========================
+   SEARCH SECTION
+   ========================= */
+.search-bar {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px;
+  box-shadow: var(--shadow-sm);
+}
+.search-input {
+  flex: 1 1 auto;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-size: 1rem;
+}
+.btn-primary {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 8px 14px;
+  background: var(--accent);
+  color: #000; /* readable on amber */
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  font-weight: 600;
+}
+.btn-primary:hover { filter: brightness(0.98); }
+
+.status {
+  min-height: 24px;
+  margin-top: 8px;
+  display: flex; align-items: center; gap: 8px;
+  color: var(--text-muted);
+}
+
+/* Spinner inline example */
+.spinner {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 2px solid #cbd5e1;
+  border-top-color: var(--accent);
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* =========================
+   HISTORY pills (horizontal scroll)
+   ========================= */
+.history-pills {
+  display: flex; flex-wrap: nowrap; gap: 8px;
+  min-width: 200px; width: 100%;
+  overflow-x: auto; overflow-y: hidden;
+  white-space: nowrap;
+  padding-bottom: 2px; /* room for scrollbar thumb */
+}
+.pill {
+  flex: 0 0 auto;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 10px;
+  border-radius: 9999px;
+  background: var(--bg-subtle);
+  color: var(--text);
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.pill:hover { filter: brightness(0.98); }
+
+/* =========================
+   COUNTRY CARD (main)
+   ========================= */
+.card {
+  position: relative;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: var(--shadow-md);
+  transition: box-shadow .2s ease;
+}
+.card:hover { box-shadow: 0 8px 16px -4px rgb(0 0 0 / 0.15); }
+
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+@media (min-width: 640px) {
+  .card-grid { grid-template-columns: 120px 1fr; }
+}
+@media (min-width: 1024px) {
+  .card-grid { grid-template-columns: 140px 1fr 220px; }
+}
+
+.flag-box {
+  overflow: hidden;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.flag-img { width: 100%; height: auto; object-fit: cover; display: block; }
+
+.card-title {
+  margin: 0 0 6px 0;
+  color: var(--text);
+  font-weight: 700;
+  font-size: clamp(1.125rem, 1.2vw, 1.5rem); /* 18–24px */
+}
+.card-meta { font-size: 0.95rem; color: var(--text-muted); }
+.card-meta strong { color: var(--text); }
+
+.card-aside {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+/* Favorite star button on the card */
+.favorite-btn {
+  position: absolute; top: 10px; right: 10px;
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 8px;
+  color: var(--text-muted);
+  background: transparent;
+  border: none; cursor: pointer;
+}
+.favorite-btn .star { width: 20px; height: 20px; transition: color .15s ease; }
+.favorite-btn.is-on .star { color: #f59e0b; } /* amber-500 */
+
+/* =========================
+   FAVORITES (pills with flag)
+   ========================= */
+.fav-item {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 10px;
+  background: var(--bg-subtle);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  cursor: pointer;
+}
+.fav-flag {
+  width: 20px; height: 20px; object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+.fav-remove-btn {
+  background: transparent; border: none; color: var(--text-muted);
+  cursor: pointer; font-size: 14px;
+}
+
+/* =========================
+   NEIGHBORS (compact rows)
+   ========================= */
+.neighbors-wrapper {
+  /* full-bleed inside .panel with 16px padding */
+  margin-inline: -16px;
+  display: flex; flex-direction: column; gap: 6px; width: calc(100% + 32px);
+}
+.neighbor-card {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 16px;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer; transition: background-color .15s ease, box-shadow .15s ease;
+}
+.neighbor-card:hover { filter: brightness(0.98); }
+.neighbor-flag {
+  width: 32px; height: 24px; object-fit: cover;
+  border-radius: 4px; border: 1px solid var(--border);
+}
+.neighbor-name {
+  font-size: 0.95rem; font-weight: 600; color: var(--text);
+}
+
+/* =========================
+   RESPONSIVE TWEAKS
+   ========================= */
+@media (max-width: 720px) {
+  .layout-grid { gap: 16px; padding: 16px; }
+  .panel { padding: 12px; border-radius: 12px; }
+  .sidebar-header { margin: -12px -12px 0 -12px; padding: 10px 12px; }
+}
