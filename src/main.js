@@ -16,6 +16,7 @@ import HistoryView from './views/HistoryView.js';
 import ThemeView from './views/ThemeView.js';
 
 import AppController from './controllers/AppController.js';
+import NeighborsView from './views/NeighborsView.js';
 
 async function bootstrap() {
   const bus = new EventBus();
@@ -32,6 +33,11 @@ async function bootstrap() {
   const countryView = new CountryView(bus, root.cardContainer);
   const favoritesView = new FavoritesView(bus, root.favoritesContainer);
   const historyView = new HistoryView(bus, root.historyContainer);
+  const neighborsView = new NeighborsView(
+    bus,
+    root.neighborsContainer,
+    root.neighborsToggle
+  );
   const themeView = new ThemeView(root.themeMount);
   themeView.render();
 
@@ -47,6 +53,7 @@ async function bootstrap() {
       country: countryView,
       favorites: favoritesView,
       history: historyView,
+      neighbors: neighborsView,
       status: root.status,
     },
   });

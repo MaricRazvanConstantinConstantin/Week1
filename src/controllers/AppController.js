@@ -47,7 +47,10 @@ export default class AppController {
       this.views.history.render(list);
     });
 
-    
+    this.bus.on('neighbors:changed', (list) => {
+      this.views.neighbors.render(list || []);
+    });
+
     this.bus.on('state:changed', ({ loading, message }) => {
       const s = this.views.status;
 
