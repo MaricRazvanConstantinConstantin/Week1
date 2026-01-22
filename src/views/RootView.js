@@ -13,17 +13,19 @@ export default class RootView {
     document.body.className = `
       bg-slate-100 dark:bg-slate-900
       text-slate-800 dark:text-slate-200
-      min-h-screen antialiased
+      min-h-screen antialiased flex flex-col justify-between
     `;
 
     const headerHTML = await this.tpl.load("header.html");
-    const layoutHTML = await this.tpl.load("layout-grid.html");
+    const layoutHTML = await this.tpl.load("center-grid.html");
     const leftHTML = await this.tpl.load("sidebar-left.html");
     const rightHTML = await this.tpl.load("sidebar-right.html");
     const searchHTML = await this.tpl.load("search-section.html");
+    const footerHTML = await this.tpl.load("footer.html");
 
     document.body.insertAdjacentHTML("beforeend", headerHTML);
     document.body.insertAdjacentHTML("beforeend", layoutHTML);
+    document.body.insertAdjacentHTML("beforeend", footerHTML);
 
     const left = document.querySelector("#sidebar-left");
     const main = document.querySelector("#main");

@@ -1,4 +1,3 @@
-
 import EventBus from './core/EventBus.js';
 
 import CountryService from './services/CountryService.js';
@@ -40,7 +39,6 @@ async function bootstrap() {
   );
   const themeView = new ThemeView(root.themeMount);
   themeView.render();
-
 
   new AppController({
     bus,

@@ -1,4 +1,3 @@
-
 export default class SearchView {
   constructor(bus, inputEl, btnEl) {
     this.bus = bus;

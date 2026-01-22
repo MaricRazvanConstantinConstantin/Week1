@@ -1,4 +1,3 @@
-
 import DataFormatter from '../utils/DataFormatter.js';
 import TemplateLoader from '../utils/TemplateLoader.js';
 
@@ -7,13 +6,21 @@ export default class CountryView {
     this.bus = bus;
     this.container = container;
     this.tpl = new TemplateLoader();
+
     this.cardTemplate = null;
 
+    this.listWrapperTemplate = null; 
+    this.listItemTemplate = null;
+
     this._bindEvents();
+
+    this.bus.on('countries:allChanged', ({ list } = { list: [] }) => {
+      this.renderAll(list || []);
+    });
   }
 
   _bindEvents() {
-    
+
     this.container.addEventListener('click', (e) => {
       const btn = e.target.closest('.favorite-btn');
       if (!btn) return;
@@ -26,7 +33,7 @@ export default class CountryView {
 
       this.bus.emit('favorites:toggleRequested', {
         countryName: name,
-        isFavorite: willBeFavorite
+        isFavorite: willBeFavorite,
       });
 
       if (star) {
@@ -36,36 +43,58 @@ export default class CountryView {
         btn.classList.toggle('dark:bg-amber-500/10', willBeFavorite);
       }
     });
+
+    this.container.addEventListener('click', (e) => {
+      const row = e.target.closest('.compact-card[data-country]');
+      if (!row) return;
+      const name = row.getAttribute('data-country');
+      if (!name) return;
+      this.bus.emit('search:requested', { query: name, source: 'all-countries' });
+    });
+
+    const allBtn = document.getElementById('countries-all-button');
+    if (allBtn) {
+      allBtn.addEventListener('click', () => {
+        this.bus.emit('countries:allRequested', { sortBy: 'name', order: 'asc' });
+      });
+    }
   }
 
   clear() {
     this.container.innerHTML = '';
   }
 
-  async _ensureTemplates() {
+  async _ensureCardTemplate() {
     if (!this.cardTemplate) {
-
       this.cardTemplate = await this.tpl.load('components/country-card.html');
     }
   }
 
+  async _ensureListTemplates() {
+    if (!this.listWrapperTemplate) {
+      this.listWrapperTemplate = await this.tpl.load('components/countries-list.html');
+    }
+    if (!this.listItemTemplate) {
+      this.listItemTemplate = await this.tpl.load('components/countries-list-item.html');
+    }
+  }
+
   async render(country, favoritesList = []) {
-    await this._ensureTemplates();
+    await this._ensureCardTemplate();
     this.clear();
 
     if (!country) return;
 
-    
     const data = DataFormatter.formatCountry(country);
 
-    let html = this.tpl.interpolate(this.cardTemplate, {
+    const html = this.tpl.interpolate(this.cardTemplate, {
       name: data.name,
       capital: data.capital,
       languages: data.languages,
       mapsUrl: data.mapsUrl,
       population: data.population,
       currency: data.currency,
-      flag: data.flag || '' ,
+      flag: data.flag || '',
     });
 
     this.container.innerHTML = html;
@@ -77,15 +106,31 @@ export default class CountryView {
 
       star.classList.toggle('text-amber-500', isFav);
       star.classList.toggle('text-slate-500', !isFav);
-
       favBtn.classList.toggle('bg-amber-50', isFav);
       favBtn.classList.toggle('dark:bg-amber-500/10', isFav);
       favBtn.title = isFav ? 'Remove from favorites' : 'Add to favorites';
     }
-
   }
 
-  
+  async renderAll(list = []) {
+    await this._ensureListTemplates();
+    this.clear();
+
+    if (!list.length) return;
+
+    const itemsHTML = list
+      .map((c) =>
+        this.tpl.interpolate(this.listItemTemplate, {
+          name: c.name,
+          flag: c.flag || '',
+        })
+      )
+      .join('');
+
+    const html = this.tpl.injectHTML(this.listWrapperTemplate, { items: itemsHTML });
+    this.container.innerHTML = html;
+  }
+
   setFavoriteState(countryName, isFavorite) {
     const btn = this.container.querySelector('.favorite-btn');
     if (!btn) return;
@@ -108,5 +153,4 @@ export default class CountryView {
     btn.classList.add('scale-105');
     setTimeout(() => btn.classList.remove('scale-105'), 120);
   }
-
 }

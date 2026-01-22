@@ -51,6 +51,13 @@ export default class CountryService {
 
     return filtered;
   }
+  
+  async getAll() {
+    const fields = 'name,flags,cca2,cca3,region,population';
+    const res = await fetch(`${this.baseUrl}/all?fields=${fields}`);
+    if (!res.ok) throw new Error('Failed to fetch all countries');
+    return res.json();
+  }
 
   async getByCodes(codes = []) {
     if (!Array.isArray(codes) || codes.length === 0) return [];

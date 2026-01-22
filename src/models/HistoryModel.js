@@ -7,9 +7,15 @@ export default class HistoryModel {
   _load() {
     try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch { return []; }
   }
+
   _save(history) {
     localStorage.setItem(KEY, JSON.stringify(history));
     this.bus.emit('history:changed', history);
+  }
+
+  _clear(){
+    localStorage.removeItem(KEY);
+    this.bus.emit('history:changed', []);
   }
 
   all() { return this._load(); }
@@ -22,6 +28,4 @@ export default class HistoryModel {
     this._save(history);
     return history;
   }
-
-  clear() { this._save([]); }
 }

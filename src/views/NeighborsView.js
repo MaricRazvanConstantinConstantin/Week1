@@ -1,4 +1,3 @@
-
 import TemplateLoader from "../utils/TemplateLoader.js";
 import DataFormatter from "../utils/DataFormatter.js";
 

@@ -5,9 +5,18 @@
     >
       ⭐ Favorites
     </h2>
+    <button
+      class="fav-clear-btn text-sm text-red-600 dark:text-red-400 hover:underline decoration-red-600/60 dark:decoration-red-400/60"
+      aria-label="Clear all favorites"
+      title="Clear all favorites"
+    >
+      Clear All
+    </button>
   </div>
 
-  <div class="favorites-pills flex flex-wrap gap-3 overflow-x-hidden p-2">
+  <div
+    class="favorites-pills flex flex-wrap gap-3 overflow-x-hidden p-2 min-h-[0]"
+  >
     {{{items}}}
   </div>
 </div>

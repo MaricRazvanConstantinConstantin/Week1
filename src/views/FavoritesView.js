@@ -1,4 +1,3 @@
-
 import TemplateLoader from '../utils/TemplateLoader.js';
 
 export default class FavoritesView {
@@ -23,6 +22,12 @@ export default class FavoritesView {
       const name = item.dataset.country;
       this.bus.emit('search:requested', { query: name, source: 'favorites' });
     });
+
+    container.addEventListener('click', (e) => {
+      const clearBtn = e.target.closest('.fav-clear-btn');
+      if (!clearBtn) return;
+      this.bus.emit('favorites:clearRequested');
+    });
   }
 
   async _ensureTemplates() {
@@ -36,11 +41,6 @@ export default class FavoritesView {
 
   async render(list) {
     await this._ensureTemplates();
-
-    if (!list?.length) {
-      this.container.innerHTML = '';
-      return;
-    }
 
     const itemsHTML = list.map(name => this.tpl.interpolate(this.itemTemplate, { name })).join('');
 

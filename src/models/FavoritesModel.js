@@ -15,6 +15,11 @@ export default class FavoritesModel {
     this.bus.emit('favorites:changed', arr);
   }
 
+  _clear(){
+    localStorage.removeItem(KEY);
+    this.bus.emit('favorites:changed', []);
+  }
+
   all() { return this._load(); }
 
   add(name) {

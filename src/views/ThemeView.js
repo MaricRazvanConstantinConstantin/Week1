@@ -1,4 +1,3 @@
-
 import TemplateLoader from '../utils/TemplateLoader.js';
 import { initTheme, toggleTheme } from '../utils/theme.js';
 
@@ -17,6 +16,7 @@ export default class ThemeView {
     if (!this.template) {
       this.template = await this.tpl.load('components/theme-toggle.html');
     }
+
     this.mountEl.innerHTML = this.template;
 
     const btn = this.mountEl.querySelector('.theme-toggle');

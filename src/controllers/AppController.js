@@ -29,10 +29,19 @@ export default class AppController {
       this.favoritesModel.toggle(countryName, isFavorite);
     });
 
-    
+    this.bus.on('favorites:clearRequested', () => {
+      this.favoritesModel._clear();
+    });
+
     this.bus.on('country:changed', (country) => {
         const list = this.favoritesModel.all();
         this.views.country.render(country, list);
+    });
+
+
+    this.bus.on('countries:allRequested', ({ sortBy = 'name', order = 'asc' } = {}) => {
+      this.views.country.clear();
+      this.countryModel.fetchAllSorted({ sortBy, order });
     });
 
 
@@ -46,6 +55,10 @@ export default class AppController {
     this.bus.on('history:changed', (list) => {
       this.views.history.render(list);
     });
+
+    this.bus.on('history:clearRequested', () => {
+      this.historyModel._clear();
+    })
 
     this.bus.on('neighbors:changed', (list) => {
       this.views.neighbors.render(list || []);
